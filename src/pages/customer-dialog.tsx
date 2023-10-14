@@ -26,12 +26,11 @@ const CustomerDialog: React.FC<DialogProps> = ({
   });
   const updateCostumer = () => {
     const info = {
-      customerId: customer.id,
       ...updatedData,
     };
     console.log(info);
     axios
-      .put(`${BASEURL}/customer/${id}`, info)
+      .put(`${BASEURL}/customer/${customer.id}`, info)
       .then((response) => {
         toast.success(response?.data.message);
         onClose();
@@ -49,7 +48,7 @@ const CustomerDialog: React.FC<DialogProps> = ({
       address: customer.address,
       contact: customer.contact,
     });
-  }, [customer]);
+  }, [customer.email]);
   const cancelButtonRef = useRef(null);
   if (!isOpen) return null;
   // Separate change handlers for each input field
@@ -76,12 +75,12 @@ const CustomerDialog: React.FC<DialogProps> = ({
     }));
   };
 
-  const handlePhoneNumberChange: React.ChangeEventHandler<HTMLInputElement> = (
+  const handleContactChange: React.ChangeEventHandler<HTMLInputElement> = (
     e,
   ) => {
     setUpdatedData((prevData) => ({
       ...prevData,
-      phoneNumber: e.target.value,
+      contact: e.target.value,
     }));
   };
 
@@ -147,6 +146,7 @@ const CustomerDialog: React.FC<DialogProps> = ({
                       <input
                         type="text"
                         onChange={handleNameChange}
+                        value={updatedData.name}
                         className="w-full border rounded-md  px-3 py-2"
                         placeholder="Enter the Name"
                       />
@@ -154,6 +154,7 @@ const CustomerDialog: React.FC<DialogProps> = ({
                     <div className="mt-6">
                       <input
                         type="text"
+                        value={updatedData.email}
                         onChange={handleEmailChange}
                         className="w-full border rounded-md  px-3 py-2"
                         placeholder="Enter the email"
@@ -162,6 +163,7 @@ const CustomerDialog: React.FC<DialogProps> = ({
                     <div className="mt-6">
                       <input
                         type="text"
+                        value={updatedData.address}
                         onChange={handleAddressChange}
                         className="w-full border rounded-md  px-3 py-2"
                         placeholder="Enter the address"
@@ -170,7 +172,8 @@ const CustomerDialog: React.FC<DialogProps> = ({
                     <div className="mt-6">
                       <input
                         type="text"
-                        onChange={handlePhoneNumberChange}
+                        value={updatedData.contact}
+                        onChange={handleContactChange}
                         className="w-full border rounded-md  px-3 py-2"
                         placeholder="Enter the phone number"
                       />

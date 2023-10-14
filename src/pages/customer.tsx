@@ -34,7 +34,7 @@ const Customer: NextPageWithLayout = () => {
     api
       .get(`/customer`)
       .then((response) => {
-        setCustomers(response.data);
+        setCustomers(response.data.data);
         console.log(response.data);
       })
 
@@ -85,12 +85,11 @@ const Customer: NextPageWithLayout = () => {
     setCustomerDialogOpen(false);
   };
 
-  const handleConfirmDelete = (id: string) => {
-    if (selectedCustomer && selectedCustomer.id) {
-      const idToDelete = selectedCustomer.id;
+  const handleConfirmDelete = (id:string) => {
+
 
       api
-        .delete(`/customer/${idToDelete}`)
+        .delete(`/customer/${id}`)
         .then((response) => {
           fetchCustomer();
           toast.success(response.data.message, { position: "bottom-center" });
@@ -98,7 +97,7 @@ const Customer: NextPageWithLayout = () => {
         .catch((err) => {
           toast.error(err.response?.data?.message);
         });
-    }
+
     setConfirmationDialogOpen(false);
   };
   const handleDeleteClick = () => {
@@ -169,7 +168,8 @@ const Customer: NextPageWithLayout = () => {
                         <ConfirmationDialog
                           isOpen={isConfirmationDialogOpen}
                           onClose={() => setConfirmationDialogOpen(false)}
-                          onConfirm={handleConfirmDelete}
+                          onConfirm={()=>handleConfirmDelete(customer.id)}
+                          customer={customer}
                         />
                       )}
                     </td>
