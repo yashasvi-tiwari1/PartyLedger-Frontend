@@ -6,6 +6,7 @@ import { NextPageWithLayout } from "./_app";
 import { toast } from "react-toastify";
 import { api } from "ledger/helper/api";
 import BoxCombo from "ledger/components/boxCombo";
+import ConfirmDeleteTransaction from "ledger/components/confirmDeleteTransaction";
 
 interface transaction {
   id: string;
@@ -28,6 +29,8 @@ const Transaction: NextPageWithLayout = () => {
   const [moneyTransactions, setMoneyTransactions] = useState<
     moneyTransaction[]
   >([]);
+  const [kConfirmDelete, setKConfirmDelete] = useState(false);
+  const [deletedTransaction, setDeletedTransaction] = useState({});
 
   // const [search, setSearch] = useState<transaction[]>(transactions);
 
@@ -55,6 +58,11 @@ const Transaction: NextPageWithLayout = () => {
   // useEffect(() => {
   //   setSearch(transactions);
   // }, [transactions]);
+
+  const handleKTransactionDelete = (transaction: any) => {
+    setDeletedTransaction(transaction);
+    setKConfirmDelete(true);
+  };
 
   const router = useRouter();
   const handleEdit = (id: string) => {
@@ -149,9 +157,17 @@ const Transaction: NextPageWithLayout = () => {
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
-                        onClick={() => handleDelete(kTransaction.id)}
+                        onClick={() => handleKTransactionDelete(kTransaction)}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
+                      {kConfirmDelete && (
+                        <ConfirmDeleteTransaction
+                          isOpen={kConfirmDelete}
+                          onClose={() => setKConfirmDelete(false)}
+                          onConfirm={() => handleDelete(kTransaction.id)}
+                          transaction={deletedTransaction}
+                        />
+                      )}
                     </td>
                   </tr>
                 </tbody>

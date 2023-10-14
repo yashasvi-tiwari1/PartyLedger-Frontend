@@ -17,6 +17,31 @@ interface FormData {
   contact: number;
 }
 
+const validationSchema = z
+  .object({
+    name: z.string().min(1, { message: "Full name is required" }).max(60),
+    email: z
+      .string()
+      .email({ message: "Invalid email format" })
+      .min(1, { message: "Email is required" }),
+    password: z
+      .string()
+      .min(1, { message: "Password is required" })
+      .min(6, { message: "password must be at least 6 characters " })
+      .max(20),
+    confirmPassword: z
+      .string()
+      .min(1, "Confirm password is required")
+      .min(6, { message: "Password must be at least 6 characters " })
+      .max(20),
+    address: z.string().min(3, "Address should be minimum three words").max(30),
+    contact: z.number().min(9, "Phone number must be minimum 9 digits").max(10),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword", "password"],
+  });
+
 function SignUp() {
   const [data, setData] = useState({
     name: "",
@@ -24,38 +49,9 @@ function SignUp() {
     password: "",
     confirmPassword: "",
     address: "",
-    contact: "",
+    contact: undefined,
   });
-  const validationSchema = z
-    .object({
-      name: z.string().min(1, { message: "Full name is required" }).max(60),
-      email: z
-        .string()
-        .email({ message: "Invalid email format" })
-        .min(1, { message: "Email is required" }),
-      password: z
-        .string()
-        .min(1, { message: "Password is required" })
-        .min(6, { message: "password must be at least 6 characters " })
-        .max(20),
-      confirmPassword: z
-        .string()
-        .min(1, "Confirm password is required")
-        .min(6, { message: "Password must be at least 6 characters " })
-        .max(20),
-      address: z
-        .string()
-        .min(3, "Adress should be minimum three words")
-        .max(30),
-      contact: z
-        .number()
-        .min(9, "Phone number must be minimum 9 digits")
-        .max(10),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword", "password"],
-    });
+
   const {
     register,
     handleSubmit,
@@ -143,7 +139,7 @@ function SignUp() {
             </div>
             <div className="mb-5 w-full">
               <input
-                type="text"
+                type="number"
                 placeholder="Contact Number"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
                 {...register("contact")}

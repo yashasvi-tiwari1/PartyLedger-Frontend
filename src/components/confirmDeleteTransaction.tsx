@@ -11,23 +11,23 @@ interface ConfirmationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void; // Define the correct type for onConfirm
-  customer: { name: string };
+  transaction: any;
 }
 
 const dialogTitleStyle = {
-  backgroundColor: "blue",
+  // backgroundColor: "blue",
   color: "white",
   padding: "16px",
   fontSize: "24px",
   textAlign: "center",
 };
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+const ConfirmDeleteTransaction: React.FC<ConfirmationDialogProps> = ({
   isOpen,
   onClose,
   onConfirm,
-  customer,
+  transaction,
 }) => {
-  console.log(customer.name);
+  console.log(transaction.item);
   const handleClose = () => {
     onClose();
   };
@@ -45,17 +45,17 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         </div>
         <div className="-ml-4">
           <DialogTitle>
-            Do you want to delete customer
+            Do you want to delete transaction
             <span className="font-semibold text-red-600 ml-2">
-              {customer.name}
+              {transaction.item}
             </span>
           </DialogTitle>
         </div>
       </div>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to delete? This will delete this customer detail
-          permanently.
+          Are you sure you want to delete? This will delete this transaction
+          detail permanently.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -82,4 +82,4 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   );
 };
 
-export default ConfirmationDialog;
+export default ConfirmDeleteTransaction;

@@ -29,6 +29,7 @@ const Customer: NextPageWithLayout = () => {
   const [editedCustomer, setEditedCustomer] = useState<customerData | null>(
     null,
   );
+  const [deleteCustomer, setDeleteCustomer] = useState({ name: "" });
 
   const fetchCustomer = useCallback(() => {
     api
@@ -85,22 +86,21 @@ const Customer: NextPageWithLayout = () => {
     setCustomerDialogOpen(false);
   };
 
-  const handleConfirmDelete = (id:string) => {
-
-
-      api
-        .delete(`/customer/${id}`)
-        .then((response) => {
-          fetchCustomer();
-          toast.success(response.data.message, { position: "bottom-center" });
-        })
-        .catch((err) => {
-          toast.error(err.response?.data?.message);
-        });
+  const handleConfirmDelete = (id: string) => {
+    api
+      .delete(`/customer/${id}`)
+      .then((response) => {
+        fetchCustomer();
+        toast.success(response.data.message, { position: "bottom-center" });
+      })
+      .catch((err) => {
+        toast.error(err.response?.data?.message);
+      });
 
     setConfirmationDialogOpen(false);
   };
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (customer: any) => {
+    setDeleteCustomer({ name: customer.name });
     setConfirmationDialogOpen(true);
     // Open the confirmation dialog when delete button is clicked
   };
@@ -161,15 +161,17 @@ const Customer: NextPageWithLayout = () => {
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
-                        onClick={() => handleDeleteClick()}
+                        onClick={() => {
+                          handleDeleteClick(customer);
+                        }}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
                       {isConfirmationDialogOpen && (
                         <ConfirmationDialog
                           isOpen={isConfirmationDialogOpen}
                           onClose={() => setConfirmationDialogOpen(false)}
-                          onConfirm={()=>handleConfirmDelete(customer.id)}
-                          customer={customer}
+                          onConfirm={() => handleConfirmDelete(customer.id)}
+                          customer={deleteCustomer}
                         />
                       )}
                     </td>

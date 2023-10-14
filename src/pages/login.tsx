@@ -150,7 +150,6 @@ const Login = () => {
                 type="submit"
                 className="bg-teal-500 hover:bg-teal-700 text-white py-3 px-6 rounded w-full tracking-wide text-xl font-semibold"
               >
-                {" "}
                 Sign In
               </button>
             </div>
@@ -163,7 +162,9 @@ const Login = () => {
           <div className="-mt-5  py-1 px-2 flex gap-2  text-right  float-right text-gray-700 ">
             <span> Not a member?</span>
             <Link href="/signup" className="font-semibold ">
-              <u>Signup Now</u>{" "}
+              <div>
+                <u>Signup Now</u>
+              </div>
             </Link>
           </div>
         </div>

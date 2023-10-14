@@ -38,6 +38,15 @@ const PayDialog: React.FC<DialogProps> = ({ isOpen, onClose, customer }) => {
       });
   };
 
+  const handleKeyDown = (e: any) => {
+    const allowedKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const key = e.key;
+
+    if (!allowedKeys.includes(key) && e.key.length === 1) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
@@ -102,6 +111,7 @@ const PayDialog: React.FC<DialogProps> = ({ isOpen, onClose, customer }) => {
                         <input
                           type="text"
                           onChange={handleAmount}
+                          onKeyDown={handleKeyDown}
                           className="w-full border rounded-md  px-3 py-2"
                           placeholder="Enter the amount"
                         />
