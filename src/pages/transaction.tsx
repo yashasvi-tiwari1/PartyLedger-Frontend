@@ -30,6 +30,7 @@ const Transaction: NextPageWithLayout = () => {
     moneyTransaction[]
   >([]);
   const [kConfirmDelete, setKConfirmDelete] = useState(false);
+
   const [deletedTransaction, setDeletedTransaction] = useState({});
 
   // const [search, setSearch] = useState<transaction[]>(transactions);
@@ -135,11 +136,9 @@ const Transaction: NextPageWithLayout = () => {
                     <td className="border px-4 py-2"> {index + 1} </td>
                     <td className="border px-4 py-2"> {kTransaction.item}</td>
                     <td className="border px-4 py-2">
-                      {" "}
                       {kTransaction.unitPrice}
                     </td>
                     <td className="border px-4 py-2">
-                      {" "}
                       {kTransaction.quantity}
                     </td>
                     <td className="border px-4 py-2">
@@ -207,9 +206,17 @@ const Transaction: NextPageWithLayout = () => {
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
-                        onClick={() => handleMoneyDelete(mTransaction.id)}
+                        onClick={() => handleKTransactionDelete(mTransaction)}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
+                      {kConfirmDelete && (
+                        <ConfirmDeleteTransaction
+                          isOpen={kConfirmDelete}
+                          onClose={() => setKConfirmDelete(false)}
+                          onConfirm={() => handleDelete(mTransaction.id)}
+                          transaction={deletedTransaction}
+                        />
+                      )}
                     </td>
                   </tr>
                 </tbody>

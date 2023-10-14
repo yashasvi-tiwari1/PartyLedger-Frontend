@@ -10,12 +10,12 @@ import { IconTrash } from "@tabler/icons-react";
 interface ConfirmationDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void; // Define the correct type for onConfirm
+  onConfirm: () => void;
   transaction: any;
 }
 
 const dialogTitleStyle = {
-  // backgroundColor: "blue",
+  backgroundColor: "blue",
   color: "white",
   padding: "16px",
   fontSize: "24px",
@@ -27,7 +27,6 @@ const ConfirmDeleteTransaction: React.FC<ConfirmationDialogProps> = ({
   onConfirm,
   transaction,
 }) => {
-  console.log(transaction.item);
   const handleClose = () => {
     onClose();
   };
@@ -47,7 +46,8 @@ const ConfirmDeleteTransaction: React.FC<ConfirmationDialogProps> = ({
           <DialogTitle>
             Do you want to delete transaction
             <span className="font-semibold text-red-600 ml-2">
-              {transaction.item}
+              {transaction?.item}
+              {transaction?.amount}
             </span>
           </DialogTitle>
         </div>
