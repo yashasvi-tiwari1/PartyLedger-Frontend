@@ -13,7 +13,7 @@ const validationSchema = z.object({
   customerId: z.string().min(1, { message: " CustomerId is required" }).max(60),
   item: z.string().min(1, { message: "item is required" }),
   unitPrice: z.number().min(1, { message: "unitPrice is required" }),
-  quantity: z.number().min(1, "Quantity is required"),
+  quantity: z.number().min(1, { message: "Quantity is required" }),
 });
 
 type Schema = z.infer<typeof validationSchema>;
@@ -21,14 +21,16 @@ const KhataTransaction: NextPageWithLayout = () => {
   const [data, setData] = useState({
     customerName: "",
     item: "",
-    unitPrice: undefined,
-    quantity: undefined,
+    unitPrice: 0,
+    quantity: 0,
   });
   const [customerId, setCustomerId] = useState("");
+  const [customerName, setCustomerName] = useState("");
+
   const [customers, setCustomers] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [unitPrice, setUnitPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [totalPrice, setTotalPrice] = useState<any>();
+  const [unitPrice, setUnitPrice] = useState<any>();
+  const [quantity, setQuantity] = useState<any>();
 
   const {
     setValue,
@@ -43,10 +45,20 @@ const KhataTransaction: NextPageWithLayout = () => {
     console.log("Setting value for", e.target.name, "to", value);
     if (e.target.name == "unitPrice") setUnitPrice(e.target.value);
     if (e.target.name == "quantity") setQuantity(e.target.value);
+
     setData({
       ...data,
       [e.target.name]: value,
     });
+  };
+
+  const handleKeyDown = (e: any) => {
+    const allowedKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const key = e.key;
+
+    if (!allowedKeys.includes(key) && e.key.length === 1) {
+      e.preventDefault();
+    }
   };
 
   const navigate = useRouter();
@@ -62,18 +74,28 @@ const KhataTransaction: NextPageWithLayout = () => {
       totalPrice: totalPrice,
     };
     setCustomers(userData);
+    setData({
+      item: "",
+      quantity: 0,
+      customerName,
+      unitPrice: 0,
+    });
+    setQuantity("");
+    setUnitPrice("");
+    setTotalPrice("");
     api
       .post(`/transaction`, userData)
       .then((response) => {
         setData(response.data);
         toast.success(response.data.message);
-        void navigate.push("/transaction");
+        // void navigate.push("/transaction");
       })
       .catch((error) => {
         alert(error?.response?.message);
       });
   };
   const handleBoxInput = (e: any) => {
+    setCustomerName(e.name);
     setCustomerId(e.id);
     setValue("customerId", e.id, { shouldValidate: true });
   };
@@ -114,9 +136,10 @@ const KhataTransaction: NextPageWithLayout = () => {
               <input
                 type="number"
                 placeholder="unit Price"
+                onKeyDown={handleKeyDown}
                 className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
                 {...register("unitPrice", { valueAsNumber: true })}
-                value={data.unitPrice}
+                value={unitPrice}
                 onChange={handleChange}
               />
               {errors.unitPrice && <span>{errors.unitPrice.message}</span>}
@@ -126,9 +149,10 @@ const KhataTransaction: NextPageWithLayout = () => {
               <input
                 type="number"
                 placeholder="quantity"
+                onKeyDown={handleKeyDown}
                 className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
                 {...register("quantity", { valueAsNumber: true })}
-                value={data.quantity}
+                value={quantity}
                 onChange={handleChange}
               />
               {errors.unitPrice && <span>{errors.unitPrice.message}</span>}
@@ -141,6 +165,7 @@ const KhataTransaction: NextPageWithLayout = () => {
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
                 value={totalPrice}
                 onClick={handleTotalPrice}
+                readOnly={true}
               />
             </div>
             <div className="mb-2">
