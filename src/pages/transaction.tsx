@@ -30,35 +30,30 @@ const Transaction: NextPageWithLayout = () => {
     moneyTransaction[]
   >([]);
   const [kConfirmDelete, setKConfirmDelete] = useState(false);
+  const [customer, setCustomer] = useState({});
+  const [credit, setCredit] = useState(0);
+  const [deletedTransaction, setDeletedTransaction] = useState<any>({});
+  const [customerId, setCustomerId] = useState("");
 
-  const [deletedTransaction, setDeletedTransaction] = useState({});
-
-  // const [search, setSearch] = useState<transaction[]>(transactions);
-
-  // const fetchtransaction = useCallback(() => {
-  //   api
-  //     .get(`/transaction `)
-  //     .then((response) => {
-  //       setTransactions(response.data);
-  //     })
-  //     .catch((error) => {
-  //       toast.error(error?.response?.data?.message);
-  //     });
-  // }, [BASEURL]);
-  //
-  // useEffect(() => {
-  //   fetchtransaction();
-  // }, []);
+  const fetchCustomer = (id: string) => {
+    api
+      .get(`/customer/${id} `)
+      .then((response) => {
+        setCustomer(response.data);
+        handleBoxInput(response.data);
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message);
+      });
+  };
 
   const handleBoxInput = (e: any) => {
-    console.log(e);
+    setCustomerId(e.id);
+    setCredit(e.balance);
+    console.log(e.balance);
     setKhataTransactions(e.khataTransaction);
     setMoneyTransactions(e.moneyTransaction);
   };
-
-  // useEffect(() => {
-  //   setSearch(transactions);
-  // }, [transactions]);
 
   const handleKTransactionDelete = (transaction: any) => {
     setDeletedTransaction(transaction);
@@ -73,8 +68,8 @@ const Transaction: NextPageWithLayout = () => {
     api
       .delete(`/transaction/${id}`)
       .then((response) => {
-        // fetchtransaction();
-        toast.success(response.data.message, { position: "bottom-center" });
+        fetchCustomer(customerId);
+        toast.success(response?.data?.message, { position: "bottom-center" });
       })
       .catch((err) => {
         toast.error(err?.response?.data?.message);
@@ -85,22 +80,14 @@ const Transaction: NextPageWithLayout = () => {
     api
       .delete(`/moneyTransaction/${id}`)
       .then((response) => {
-        toast.success(response.data.message, { position: "bottom-center" });
+        toast.success(response?.data?.message, { position: "bottom-center" });
+        fetchCustomer(customerId);
       })
       .catch((err) => {
         toast.error(err?.response?.data?.message);
       });
   };
 
-  // const handleSearch = (e: any) => {
-  //   setSearch(
-  //     transactions.filter((list) =>
-  //       e.target.value !== " "
-  //         ? list.item.toLowerCase().startsWith(e.target.value)
-  //         : list,
-  //     ),
-  //   );
-  // };
   return (
     <>
       <div className="bg-dashboard  p-4 rounded-lg">
@@ -111,8 +98,9 @@ const Transaction: NextPageWithLayout = () => {
               getCustomerValue={(e: any) => handleBoxInput(e)}
             />
           </div>
+          <span className="font-semibold  text-2xl">Credit: {credit}</span>
         </div>
-        <div className="w-full font-bold text-4xl flex justify-center mt-5">
+        <div className="w-full font-bold text-4xl flex justify-center mt-6">
           Khata Transaction
         </div>
         <div className="px-4 flex justify-center mx-auto container mt-4">
@@ -163,7 +151,10 @@ const Transaction: NextPageWithLayout = () => {
                         <ConfirmDeleteTransaction
                           isOpen={kConfirmDelete}
                           onClose={() => setKConfirmDelete(false)}
-                          onConfirm={() => handleDelete(kTransaction.id)}
+                          onConfirm={() => handleDelete(deletedTransaction.id)}
+                          onMConfirm={() =>
+                            handleMoneyDelete(deletedTransaction.id)
+                          }
                           transaction={deletedTransaction}
                         />
                       )}
@@ -213,7 +204,10 @@ const Transaction: NextPageWithLayout = () => {
                         <ConfirmDeleteTransaction
                           isOpen={kConfirmDelete}
                           onClose={() => setKConfirmDelete(false)}
-                          onConfirm={() => handleDelete(mTransaction.id)}
+                          onMConfirm={() =>
+                            handleMoneyDelete(deletedTransaction.id)
+                          }
+                          onConfirm={() => handleDelete(deletedTransaction.id)}
                           transaction={deletedTransaction}
                         />
                       )}

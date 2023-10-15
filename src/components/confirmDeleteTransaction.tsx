@@ -12,6 +12,7 @@ interface ConfirmationDialogProps {
   onClose: () => void;
   onConfirm: () => void;
   transaction: any;
+  onMConfirm: () => void;
 }
 
 const dialogTitleStyle = {
@@ -26,6 +27,7 @@ const ConfirmDeleteTransaction: React.FC<ConfirmationDialogProps> = ({
   onClose,
   onConfirm,
   transaction,
+  onMConfirm,
 }) => {
   const handleClose = () => {
     onClose();
@@ -33,6 +35,11 @@ const ConfirmDeleteTransaction: React.FC<ConfirmationDialogProps> = ({
 
   const handleConfirm = () => {
     onConfirm();
+    onClose();
+  };
+
+  const handleMConfirm = () => {
+    onMConfirm();
     onClose();
   };
 
@@ -70,7 +77,7 @@ const ConfirmDeleteTransaction: React.FC<ConfirmationDialogProps> = ({
         </div>
         <div className="hover:bg-blue-400 rounded-md ">
           <Button
-            onClick={handleConfirm}
+            onClick={transaction.item ? handleConfirm : handleMConfirm}
             autoFocus
             className="text-red-600 hover:text-black"
           >

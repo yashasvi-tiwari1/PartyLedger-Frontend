@@ -88,7 +88,6 @@ const KhataTransaction: NextPageWithLayout = () => {
       .then((response) => {
         setData(response.data);
         toast.success(response.data.message);
-        // void navigate.push("/transaction");
       })
       .catch((error) => {
         alert(error?.response?.message);
@@ -103,80 +102,82 @@ const KhataTransaction: NextPageWithLayout = () => {
     e.currentTarget.value = ""; // Clear the input value when clicked
   };
   return (
-    <div className="flex justify-center">
-      <div className=" px-20 py-10 w-[600px] drop-shadow-xl ">
-        <div className=" p-2 text-center  font-bold text-lg tracking-wider cursor-pointer rounded-tl-xl bg-teal-500 text-white">
-          <span className="text-2xl">Khata Transaction Entry Form </span>
-        </div>
-        <div className="bg-white p-10 rounded-b-xl">
-          <p className="font-bold text-2xl text-center text-gray-900 mb-10">
-            Welcome to Party Ledger !
-          </p>
-          <form onSubmit={handleSubmit(formSubmit)} className="user">
-            <div className="mb-5 w-full">
-              <BoxCombo
-                placeholder="Choose customer"
-                getCustomerValue={(e: any) => handleBoxInput(e)}
-              />
-              {errors.customerId && <span>{errors.customerId.message}</span>}
-            </div>
-            <div className="mb-5 w-full">
-              <input
-                type="text"
-                placeholder="Item Name"
-                className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
-                {...register("item")}
-                value={data.item}
-                onChange={handleChange}
-              />
-              {errors.item && <span>{errors.item.message}</span>}
-            </div>
+    <div className="bg-dashboard  p-4 rounded-lg">
+      <div className="flex justify-center">
+        <div className=" px-20 py-10 w-[600px] drop-shadow-xl ">
+          <div className=" p-2 text-center  font-bold text-lg tracking-wider cursor-pointer rounded-tl-xl bg-teal-500 text-white">
+            <span className="text-2xl">Khata Transaction Entry Form </span>
+          </div>
+          <div className="bg-white p-10 rounded-b-xl">
+            <p className="font-bold text-2xl text-center text-gray-900 mb-10">
+              Welcome to Party Ledger !
+            </p>
+            <form onSubmit={handleSubmit(formSubmit)} className="user">
+              <div className="mb-5 w-full">
+                <BoxCombo
+                  placeholder="Choose customer"
+                  getCustomerValue={(e: any) => handleBoxInput(e)}
+                />
+                {errors.customerId && <span>{errors.customerId.message}</span>}
+              </div>
+              <div className="mb-5 w-full">
+                <input
+                  type="text"
+                  placeholder="Item Name"
+                  className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
+                  {...register("item")}
+                  value={data.item}
+                  onChange={handleChange}
+                />
+                {errors.item && <span>{errors.item.message}</span>}
+              </div>
 
-            <div className="mb-5 w-full">
-              <input
-                type="number"
-                placeholder="unit Price"
-                onKeyDown={handleKeyDown}
-                className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
-                {...register("unitPrice", { valueAsNumber: true })}
-                value={unitPrice}
-                onChange={handleChange}
-              />
-              {errors.unitPrice && <span>{errors.unitPrice.message}</span>}
-            </div>
+              <div className="mb-5 w-full">
+                <input
+                  type="number"
+                  placeholder="unit Price"
+                  onKeyDown={handleKeyDown}
+                  className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
+                  {...register("unitPrice", { valueAsNumber: true })}
+                  value={unitPrice}
+                  onChange={handleChange}
+                />
+                {errors.unitPrice && <span>{errors.unitPrice.message}</span>}
+              </div>
 
-            <div className="mb-5 w-full">
-              <input
-                type="number"
-                placeholder="quantity"
-                onKeyDown={handleKeyDown}
-                className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
-                {...register("quantity", { valueAsNumber: true })}
-                value={quantity}
-                onChange={handleChange}
-              />
-              {errors.unitPrice && <span>{errors.unitPrice.message}</span>}
-            </div>
+              <div className="mb-5 w-full">
+                <input
+                  type="number"
+                  placeholder="quantity"
+                  onKeyDown={handleKeyDown}
+                  className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
+                  {...register("quantity", { valueAsNumber: true })}
+                  value={quantity}
+                  onChange={handleChange}
+                />
+                {errors.unitPrice && <span>{errors.unitPrice.message}</span>}
+              </div>
 
-            <div className="mb-5 w-full">
-              <input
-                type="number"
-                placeholder="total Price"
-                className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
-                value={totalPrice}
-                onClick={handleTotalPrice}
-                readOnly={true}
-              />
-            </div>
-            <div className="mb-2">
-              <button
-                type="submit"
-                className="bg-teal-500 w-full hover:bg-teal-700 text-white py-2 px-6 rounded font-semibold tracking-wider"
-              >
-                Save
-              </button>
-            </div>
-          </form>
+              <div className="mb-5 w-full">
+                <input
+                  type="number"
+                  placeholder="total Price"
+                  className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
+                  value={totalPrice}
+                  onClick={handleTotalPrice}
+                  readOnly={true}
+                />
+              </div>
+              <div className="mb-2">
+                <button
+                  type="submit"
+                  className="bg-teal-500 w-full hover:bg-teal-700 text-white py-2 px-6 rounded font-semibold tracking-wider"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

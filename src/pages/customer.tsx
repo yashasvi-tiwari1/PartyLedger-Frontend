@@ -29,7 +29,7 @@ const Customer: NextPageWithLayout = () => {
   const [editedCustomer, setEditedCustomer] = useState<customerData | null>(
     null,
   );
-  const [deleteCustomer, setDeleteCustomer] = useState({ name: "" });
+  const [deleteCustomer, setDeleteCustomer] = useState<any>({});
 
   const fetchCustomer = useCallback(() => {
     api
@@ -100,7 +100,7 @@ const Customer: NextPageWithLayout = () => {
     setConfirmationDialogOpen(false);
   };
   const handleDeleteClick = (customer: any) => {
-    setDeleteCustomer({ name: customer.name });
+    setDeleteCustomer(customer);
     setConfirmationDialogOpen(true);
     // Open the confirmation dialog when delete button is clicked
   };
@@ -155,7 +155,10 @@ const Customer: NextPageWithLayout = () => {
                       />
                       <CustomerDialog
                         isOpen={isCustomerDialogOpen}
-                        onClose={closeCustomerDialog}
+                        onClose={() => {
+                          closeCustomerDialog();
+                          fetchCustomer();
+                        }}
                         customer={selectedCustomer}
                       />
                     </td>
@@ -170,7 +173,9 @@ const Customer: NextPageWithLayout = () => {
                         <ConfirmationDialog
                           isOpen={isConfirmationDialogOpen}
                           onClose={() => setConfirmationDialogOpen(false)}
-                          onConfirm={() => handleConfirmDelete(customer.id)}
+                          onConfirm={() =>
+                            handleConfirmDelete(deleteCustomer.id)
+                          }
                           customer={deleteCustomer}
                         />
                       )}

@@ -4,7 +4,6 @@ import Image from "next/image";
 import axios from "axios";
 import { BASEURL } from "./api/api";
 import { toast } from "react-toastify";
-import { id } from "postcss-selector-parser";
 
 interface DialogProps {
   isOpen: boolean;
@@ -17,7 +16,7 @@ const CustomerDialog: React.FC<DialogProps> = ({
   onClose,
   customer = { name: "", email: "", address: "", contact: "" },
 }) => {
-  const [oldData, setOldData] = useState(customer); // Initial data
+  const [oldData, setOldData] = useState(customer);
   const [updatedData, setUpdatedData] = useState({
     name: customer.name,
     email: customer.email,
@@ -28,16 +27,13 @@ const CustomerDialog: React.FC<DialogProps> = ({
     const info = {
       ...updatedData,
     };
-    console.log(info);
     axios
       .put(`${BASEURL}/customer/${customer.id}`, info)
       .then((response) => {
         toast.success(response?.data.message);
         onClose();
-        console.log(response);
       })
       .catch((error) => {
-        console.log(error.response);
         toast.error(error?.response?.data?.message);
       });
   };
