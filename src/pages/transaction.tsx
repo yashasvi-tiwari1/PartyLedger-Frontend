@@ -8,6 +8,7 @@ import { api } from "ledger/helper/api";
 import BoxCombo from "ledger/components/boxCombo";
 import ConfirmDeleteTransaction from "ledger/components/confirmDeleteTransaction";
 import MoneyTransactionUpdate from "ledger/components/moneyTransactionUpdate";
+import KhataTransactionUpdate from "ledger/components/khataTransactionUpdate";
 
 interface transaction {
   id: string;
@@ -36,8 +37,13 @@ const Transaction: NextPageWithLayout = () => {
   const [deletedTransaction, setDeletedTransaction] = useState<any>({});
   const [customerId, setCustomerId] = useState("");
 
+  const [updateKTransaction, setUpdateKTransaction] = useState(false);
+  const [updatedKTransaction, setUpdatedKTransaction] = useState<any>({});
+
   const [updateMTransaction, setUpdateMTransaction] = useState(false);
   const [updatedMTransaction, setUpdatedMTransaction] = useState<any>({});
+
+  const router = useRouter();
 
   const fetchCustomer = (id: string) => {
     api
@@ -64,10 +70,14 @@ const Transaction: NextPageWithLayout = () => {
     setKConfirmDelete(true);
   };
 
-  const router = useRouter();
   const handleMEdit = (mTransaction: any) => {
     setUpdateMTransaction(true);
     setUpdatedMTransaction(mTransaction);
+  };
+
+  const handleKEdit = (kTransaction: any) => {
+    setUpdateKTransaction(true);
+    setUpdatedKTransaction(kTransaction);
   };
   const handleDelete = (id: string) => {
     api
@@ -95,6 +105,7 @@ const Transaction: NextPageWithLayout = () => {
 
   const handleCloseUpdateTransactions = () => {
     setUpdateMTransaction(false);
+    setUpdateKTransaction(false);
     fetchCustomer(customerId);
   };
 
@@ -148,9 +159,16 @@ const Transaction: NextPageWithLayout = () => {
 
                     <td className="border px-4 py-2">
                       <IconEdit
-                        onClick={() => handleKEdit(kTransaction.id)}
+                        onClick={() => handleKEdit(kTransaction)}
                         className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                       />
+                      {updateKTransaction && (
+                        <KhataTransactionUpdate
+                          isOpen={updateKTransaction}
+                          onClose={handleCloseUpdateTransactions}
+                          kTransaction={updatedKTransaction}
+                        />
+                      )}
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash

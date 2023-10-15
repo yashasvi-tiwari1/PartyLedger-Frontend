@@ -52,6 +52,9 @@ const KhataTransaction: NextPageWithLayout = () => {
     });
   };
 
+  const handleTotalPrice = () => {
+    setTotalPrice(unitPrice * quantity);
+  };
   const handleKeyDown = (e: any) => {
     const allowedKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
     const key = e.key;
@@ -62,9 +65,7 @@ const KhataTransaction: NextPageWithLayout = () => {
   };
 
   const navigate = useRouter();
-  const handleTotalPrice = () => {
-    setTotalPrice(unitPrice * quantity);
-  };
+
   const formSubmit = (data: Schema) => {
     const userData = {
       customerId,

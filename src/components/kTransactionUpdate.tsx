@@ -1,8 +1,9 @@
-import React, { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
+import axios from "axios";
 import { toast } from "react-toastify";
-import { api } from "ledger/helper/api";
+import { BASEURL } from "ledger/pages/api/api";
 
 interface DialogProps {
   isOpen: boolean;
@@ -10,55 +11,35 @@ interface DialogProps {
   kTransaction: any;
 }
 
-const KhataTransactionUpdate: React.FC<DialogProps> = ({
+const KTransactionUpdate: React.FC<DialogProps> = ({
   isOpen,
   onClose,
   kTransaction,
-}: DialogProps) => {
-  const [totalPrice, setTotalPrice] = useState(kTransaction.totalPrice);
-  const [unitPrice, setUnitPrice] = useState(kTransaction.unitPrice);
-  const [quantity, setQuantity] = useState(kTransaction.quantity);
+}) => {
+  const [amount, setAmount] = useState(kTransaction.amount);
   const [item, setItem] = useState(kTransaction.item);
   const cancelButtonRef = useRef(null);
-
   if (!isOpen) return null;
 
   console.log(kTransaction);
-
-  console.log(unitPrice, item, quantity, totalPrice);
-
-  const handleItemChange = (e: any) => {
+  const handleItem = (e: any) => {
     setItem(e.target.value);
-    console.log(e.target.value);
   };
-
-  const handleQuantityChange = (e: any) => {
-    setQuantity(e.target.value);
-  };
-
-  const handleUnitPriceChange = (e: any) => {
-    setUnitPrice(e.target.value);
-  };
-
-  const handleTotalPrice = () => {
-    setTotalPrice(unitPrice * quantity);
-  };
-
-  const updateKTransaction = () => {
-    const userData = {
-      item,
-      unitPrice,
-      quantity,
-      totalPrice,
+  const updateKhataTransaction = () => {
+    const info = {
+      amount: parseInt(amount, 10),
     };
-    api
-      .put(`/transaction/${kTransaction.id}`, userData)
+    console.log(info);
+    axios
+      .put(`${BASEURL}/transaction/${kTransaction.id}`, info)
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(response?.data.message);
         onClose();
+        console.log(response);
       })
       .catch((error) => {
-        alert(error?.response?.message);
+        console.log(error.response);
+        toast.error(error?.response?.data?.message);
       });
   };
 
@@ -130,63 +111,28 @@ const KhataTransactionUpdate: React.FC<DialogProps> = ({
                       as="h3"
                       className="text-xl font-semibold leading-4 tracking-tight text-gray-700 w-max"
                     ></Dialog.Title>
-
-                    <div>
-                      <div className="mb-5 w-full">
+                    <div className="mt-6">
+                      <label className="font-semibold w-full">Amount</label>
+                      <div className="mt-2">
                         <input
                           type="text"
-                          placeholder="Item Name"
-                          className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
+                          onChange={handleItem}
                           value={item}
-                          onChange={handleItemChange}
-                          required={true}
+                          className="w-full border rounded-md  px-3 py-2"
+                          placeholder="Enter the amount"
                         />
-                      </div>
-
-                      <div className="mb-5 w-full">
-                        <input
-                          type="number"
-                          placeholder="unit Price"
-                          onKeyDown={handleKeyDown}
-                          className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
-                          value={unitPrice}
-                          onChange={handleUnitPriceChange}
-                        />
-                      </div>
-
-                      <div className="mb-5 w-full">
-                        <input
-                          type="number"
-                          placeholder="quantity"
-                          onKeyDown={handleKeyDown}
-                          className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
-                          value={quantity}
-                          onChange={handleQuantityChange}
-                        />
-                      </div>
-
-                      <div className="mb-5 w-full">
-                        <input
-                          type="number"
-                          placeholder="total Price"
-                          className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
-                          value={totalPrice}
-                          onClick={handleTotalPrice}
-                          readOnly={true}
-                        />
-                      </div>
-
-                      <div className="mt-6 w-full -ml-5 ">
-                        <button
-                          type="button"
-                          onClick={updateKTransaction}
-                          className="inline-flex w-full justify-center rounded-md bg-blue-600 px-[124px] py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
-                        >
-                          UPDATE
-                        </button>
                       </div>
                     </div>
 
+                    <div className="mt-10 w-full -ml-5 ">
+                      <button
+                        type="button"
+                        onClick={updateKhataTransaction}
+                        className="inline-flex w-full justify-center rounded-md bg-blue-600 px-[124px] py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
+                      >
+                        UPDATE
+                      </button>
+                    </div>
                     <div className="mt-3 pb-2">
                       <button
                         type="button"
@@ -208,4 +154,4 @@ const KhataTransactionUpdate: React.FC<DialogProps> = ({
   );
 };
 
-export default KhataTransactionUpdate;
+export default KTransactionUpdate;
