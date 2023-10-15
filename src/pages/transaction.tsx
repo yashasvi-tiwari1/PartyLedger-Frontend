@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { api } from "ledger/helper/api";
 import BoxCombo from "ledger/components/boxCombo";
 import ConfirmDeleteTransaction from "ledger/components/confirmDeleteTransaction";
+import MoneyTransactionUpdate from "ledger/components/moneyTransactionUpdate";
 
 interface transaction {
   id: string;
@@ -35,6 +36,9 @@ const Transaction: NextPageWithLayout = () => {
   const [deletedTransaction, setDeletedTransaction] = useState<any>({});
   const [customerId, setCustomerId] = useState("");
 
+  const [updateMTransaction, setUpdateMTransaction] = useState(false);
+  const [updatedMTransaction, setUpdatedMTransaction] = useState<any>({});
+
   const fetchCustomer = (id: string) => {
     api
       .get(`/customer/${id} `)
@@ -61,8 +65,9 @@ const Transaction: NextPageWithLayout = () => {
   };
 
   const router = useRouter();
-  const handleEdit = (id: string) => {
-    router.push({ pathname: "/updatetransaction ", query: { id: id } });
+  const handleMEdit = (mTransaction: any) => {
+    setUpdateMTransaction(true);
+    setUpdatedMTransaction(mTransaction);
   };
   const handleDelete = (id: string) => {
     api
@@ -86,6 +91,11 @@ const Transaction: NextPageWithLayout = () => {
       .catch((err) => {
         toast.error(err?.response?.data?.message);
       });
+  };
+
+  const handleCloseUpdateTransactions = () => {
+    setUpdateMTransaction(false);
+    fetchCustomer(customerId);
   };
 
   return (
@@ -138,7 +148,7 @@ const Transaction: NextPageWithLayout = () => {
 
                     <td className="border px-4 py-2">
                       <IconEdit
-                        onClick={() => handleEdit(kTransaction.id)}
+                        onClick={() => handleKEdit(kTransaction.id)}
                         className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                       />
                     </td>
@@ -191,9 +201,16 @@ const Transaction: NextPageWithLayout = () => {
 
                     <td className="border px-4 py-2">
                       <IconEdit
-                        onClick={() => handleEdit(mTransaction.id)}
+                        onClick={() => handleMEdit(mTransaction)}
                         className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                       />
+                      {updateMTransaction && (
+                        <MoneyTransactionUpdate
+                          isOpen={updateMTransaction}
+                          onClose={handleCloseUpdateTransactions}
+                          mTransaction={updatedMTransaction}
+                        />
+                      )}
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
