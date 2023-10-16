@@ -84,7 +84,8 @@ function SignUp() {
         navigate.push("/playerPage");
       })
       .catch((error) => {
-        alert(error.response.message);
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
 

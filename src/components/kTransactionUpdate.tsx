@@ -35,11 +35,10 @@ const KTransactionUpdate: React.FC<DialogProps> = ({
       .then((response) => {
         toast.success(response?.data.message);
         onClose();
-        console.log(response);
       })
       .catch((error) => {
-        console.log(error.response);
-        toast.error(error?.response?.data?.message);
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
 

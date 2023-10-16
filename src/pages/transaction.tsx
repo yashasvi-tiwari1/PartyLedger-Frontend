@@ -53,7 +53,8 @@ const Transaction: NextPageWithLayout = () => {
         handleBoxInput(response.data);
       })
       .catch((error) => {
-        toast.error(error?.response?.data?.message);
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
 
@@ -86,8 +87,9 @@ const Transaction: NextPageWithLayout = () => {
         fetchCustomer(customerId);
         toast.success(response?.data?.message, { position: "bottom-center" });
       })
-      .catch((err) => {
-        toast.error(err?.response?.data?.message);
+      .catch((error) => {
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
 
@@ -98,8 +100,9 @@ const Transaction: NextPageWithLayout = () => {
         toast.success(response?.data?.message, { position: "bottom-center" });
         fetchCustomer(customerId);
       })
-      .catch((err) => {
-        toast.error(err?.response?.data?.message);
+      .catch((error) => {
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
 

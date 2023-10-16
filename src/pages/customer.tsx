@@ -93,8 +93,9 @@ const Customer: NextPageWithLayout = () => {
         fetchCustomer();
         toast.success(response.data.message, { position: "bottom-center" });
       })
-      .catch((err) => {
-        toast.error(err.response?.data?.message);
+      .catch((error) => {
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
 
     setConfirmationDialogOpen(false);

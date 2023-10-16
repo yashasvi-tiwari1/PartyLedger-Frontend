@@ -77,8 +77,9 @@ const Login = () => {
       setLoginData(response.data);
       const { accessToken, refreshToken } = response.data;
       saveTokens(accessToken, refreshToken);
-    } catch (err: any) {
-      toast.error(err.response.data.message);
+    } catch (error: any) {
+      const message = error.response?.data?.message;
+      toast.error(Array.isArray(message) ? message[0] : message);
     }
   };
 

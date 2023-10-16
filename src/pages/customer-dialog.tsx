@@ -34,7 +34,8 @@ const CustomerDialog: React.FC<DialogProps> = ({
         onClose();
       })
       .catch((error) => {
-        toast.error(error?.response?.data?.message);
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
   useEffect(() => {

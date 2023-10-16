@@ -54,11 +54,12 @@ const KhataTransactionUpdate: React.FC<DialogProps> = ({
     api
       .put(`/transaction/${kTransaction.id}`, userData)
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(response?.data?.message);
         onClose();
       })
       .catch((error) => {
-        alert(error?.response?.message);
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
 

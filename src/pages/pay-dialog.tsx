@@ -34,7 +34,8 @@ const PayDialog: React.FC<DialogProps> = ({ isOpen, onClose, customer }) => {
       })
       .catch((error) => {
         console.log(error.response);
-        toast.error(error?.response?.data?.message);
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
 

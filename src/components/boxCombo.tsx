@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASEURL } from "ledger/pages/api/api";
 import Link from "next/link";
 import { customerData } from "ledger/pages/customer";
+import { toast } from "react-toastify";
 
 interface SearchProp {
   getCustomerValue: (val: any) => void;
@@ -29,7 +30,10 @@ export default function BoxCombo({
               setCustomers(res.data.data);
             }
           })
-          .catch()
+          .catch((error) => {
+            const message = error.response?.data?.message;
+            toast.error(Array.isArray(message) ? message[0] : message);
+          })
           .finally(() => setLoading(false));
       } catch (e) {
         console.log("error");

@@ -88,10 +88,11 @@ const KhataTransaction: NextPageWithLayout = () => {
       .post(`/transaction`, userData)
       .then((response) => {
         setData(response.data);
-        toast.success(response.data.message);
+        toast.success(response?.data?.message);
       })
       .catch((error) => {
-        alert(error?.response?.message);
+        const message = error.response?.data?.message;
+        toast.error(Array.isArray(message) ? message[0] : message);
       });
   };
   const handleBoxInput = (e: any) => {
