@@ -147,10 +147,10 @@ const Transaction: NextPageWithLayout = () => {
             />
           </div>
           <span className="font-semibold  text-2xl ">
-            Credit:{" "}
+            Credit:
             <span
               className={`border px-4 py-2 font-semibold ${
-                customer.credit >= 0 ? "text-green-700" : "text-red-700"
+                credit >= 0 ? "text-green-700" : "text-red-700"
               }`}
             >
               {credit}
