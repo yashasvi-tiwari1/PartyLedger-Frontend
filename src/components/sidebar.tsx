@@ -1,14 +1,8 @@
 import Image from "next/image";
-import {
-  IconHomeDollar,
-  IconLayoutDashboard,
-  IconLogout,
-   IconUserCircle, IconUserPlus,
-  IconVocabulary,
-} from "@tabler/icons-react";
+import {IconHomeDollar, IconLayoutDashboard, IconUserCircle, IconUserPlus, IconVocabulary,} from "@tabler/icons-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {useRouter} from "next/router";
+import {useState} from "react";
 // import { removeLoginInfo } from "play/helpers/api";
 
 export default function Sidebar() {
@@ -78,15 +72,15 @@ export default function Sidebar() {
               Transaction
             </Link>
           </div>
-          <div className="dashboarcd_item">
-            <button
-              className="dashboard_text flex gap-6"
-              onClick={handleLogOut}
-            >
-              <IconLogout className=" w-6 h-6" />
-              Sign Out
-            </button>
-          </div>
+          {/*<div className="dashboarcd_item">*/}
+          {/*  <button*/}
+          {/*    className="dashboard_text flex gap-6"*/}
+          {/*    onClick={handleLogOut}*/}
+          {/*  >*/}
+          {/*    <IconLogout className=" w-6 h-6" />*/}
+          {/*    Sign Out*/}
+          {/*  </button>*/}
+          {/*</div>*/}
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@ const Dashboard: NextPageWithLayout = () => {
               </div>
               <div className="font-semibold text-lg">350</div>
               <div className="font-semibold text-lg text-gray-600">
-                Tota
+                Total Transaction
               </div>
             </div>
             <div className="bg-purple-200 p-6 rounded-lg text-center w-52 ">

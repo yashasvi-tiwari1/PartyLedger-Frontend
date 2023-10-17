@@ -108,20 +108,18 @@ const Customer: NextPageWithLayout = () => {
   return (
     <>
       <PayDialog
-          isOpen={isDialogOpen}
-          onClose={closeDialog}
-          customer={selectedCustomer}
+        isOpen={isDialogOpen}
+        onClose={closeDialog}
+        customer={selectedCustomer}
       />
 
       {isConfirmationDialogOpen && (
-          <ConfirmationDialog
-              isOpen={isConfirmationDialogOpen}
-              onClose={() => setConfirmationDialogOpen(false)}
-              onConfirm={() =>
-                  handleConfirmDelete(deleteCustomer.id)
-              }
-              customer={deleteCustomer}
-          />
+        <ConfirmationDialog
+          isOpen={isConfirmationDialogOpen}
+          onClose={() => setConfirmationDialogOpen(false)}
+          onConfirm={() => handleConfirmDelete(deleteCustomer.id)}
+          customer={deleteCustomer}
+        />
       )}
       <div className="bg-dashboard  p-4 rounded-lg">
         <div className="flex justify-between  items-center px-4  ">
@@ -164,7 +162,16 @@ const Customer: NextPageWithLayout = () => {
                     <td className="border px-4 py-2"> {customer.email}</td>
                     <td className="border px-4 py-2"> {customer.address}</td>
                     <td className="border px-4 py-2"> {customer.contact}</td>
-                    <td className="border px-4 py-2"> {customer.balance}</td>
+                    <td
+                      className={`border px-4 py-2 font-semibold ${
+                        customer.balance >= 0
+                          ? "text-green-700"
+                          : "text-red-700"
+                      }`}
+                    >
+                      {" "}
+                      {customer.balance}
+                    </td>
                     <td className="border px-4 py-2">
                       <IconEdit
                         onClick={() => openCustomerDialog(customer)}
@@ -186,7 +193,6 @@ const Customer: NextPageWithLayout = () => {
                         }}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
-
                     </td>
                     <td className="border px-4 py-2">
                       <button
@@ -197,7 +203,6 @@ const Customer: NextPageWithLayout = () => {
                       >
                         PAY
                       </button>
-
                     </td>
                   </tr>
                 ))}

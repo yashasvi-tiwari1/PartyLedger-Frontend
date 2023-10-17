@@ -114,30 +114,28 @@ const Transaction: NextPageWithLayout = () => {
 
   return (
     <>
-          <ConfirmDeleteTransaction
-              isOpen={kConfirmDelete}
-              onClose={() => setKConfirmDelete(false)}
-              onConfirm={() => handleDelete(deletedTransaction.id)}
-              onMConfirm={() =>
-                  handleMoneyDelete(deletedTransaction.id)
-              }
-              transaction={deletedTransaction}
-          />
+      <ConfirmDeleteTransaction
+        isOpen={kConfirmDelete}
+        onClose={() => setKConfirmDelete(false)}
+        onConfirm={() => handleDelete(deletedTransaction.id)}
+        onMConfirm={() => handleMoneyDelete(deletedTransaction.id)}
+        transaction={deletedTransaction}
+      />
 
       {updateMTransaction && (
-          <MoneyTransactionUpdate
-              isOpen={updateMTransaction}
-              onClose={handleCloseUpdateTransactions}
-              mTransaction={updatedMTransaction}
-          />
+        <MoneyTransactionUpdate
+          isOpen={updateMTransaction}
+          onClose={handleCloseUpdateTransactions}
+          mTransaction={updatedMTransaction}
+        />
       )}
 
       {updateKTransaction && (
-          <KhataTransactionUpdate
-              isOpen={updateKTransaction}
-              onClose={handleCloseUpdateTransactions}
-              kTransaction={updatedKTransaction}
-          />
+        <KhataTransactionUpdate
+          isOpen={updateKTransaction}
+          onClose={handleCloseUpdateTransactions}
+          kTransaction={updatedKTransaction}
+        />
       )}
 
       <div className="bg-dashboard  p-4 rounded-lg">
@@ -148,7 +146,16 @@ const Transaction: NextPageWithLayout = () => {
               getCustomerValue={(e: any) => handleBoxInput(e)}
             />
           </div>
-          <span className="font-semibold  text-2xl">Credit: {credit}</span>
+          <span className="font-semibold  text-2xl ">
+            Credit:{" "}
+            <span
+              className={`border px-4 py-2 font-semibold ${
+                customer.credit >= 0 ? "text-green-700" : "text-red-700"
+              }`}
+            >
+              {credit}
+            </span>
+          </span>
         </div>
         <div className="w-full font-bold text-4xl flex justify-center mt-6">
           Khata Transaction
@@ -191,14 +198,12 @@ const Transaction: NextPageWithLayout = () => {
                         onClick={() => handleKEdit(kTransaction)}
                         className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                       />
-
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
                         onClick={() => handleKTransactionDelete(kTransaction)}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
-
                     </td>
                   </tr>
                 </tbody>
@@ -235,7 +240,6 @@ const Transaction: NextPageWithLayout = () => {
                         onClick={() => handleMEdit(mTransaction)}
                         className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                       />
-
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
