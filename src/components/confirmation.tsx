@@ -38,7 +38,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <Dialog open={isOpen} onClose={handleClose} >
       <div className="flex border-2">
         <div className="p-2.5">
           <IconTrash className=" w-10 h-10 text-red-700 mx-auto" />
@@ -52,7 +52,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           </DialogTitle>
         </div>
       </div>
-      <DialogContent>
+      <DialogContent >
         <DialogContentText>
           Are you sure you want to delete? This will delete this customer detail
           permanently.

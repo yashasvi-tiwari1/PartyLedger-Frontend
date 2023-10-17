@@ -107,6 +107,22 @@ const Customer: NextPageWithLayout = () => {
   };
   return (
     <>
+      <PayDialog
+          isOpen={isDialogOpen}
+          onClose={closeDialog}
+          customer={selectedCustomer}
+      />
+
+      {isConfirmationDialogOpen && (
+          <ConfirmationDialog
+              isOpen={isConfirmationDialogOpen}
+              onClose={() => setConfirmationDialogOpen(false)}
+              onConfirm={() =>
+                  handleConfirmDelete(deleteCustomer.id)
+              }
+              customer={deleteCustomer}
+          />
+      )}
       <div className="bg-dashboard  p-4 rounded-lg">
         <div className="flex justify-between  items-center px-4  ">
           <div className="flex items-center gap-6">
@@ -170,16 +186,7 @@ const Customer: NextPageWithLayout = () => {
                         }}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
-                      {isConfirmationDialogOpen && (
-                        <ConfirmationDialog
-                          isOpen={isConfirmationDialogOpen}
-                          onClose={() => setConfirmationDialogOpen(false)}
-                          onConfirm={() =>
-                            handleConfirmDelete(deleteCustomer.id)
-                          }
-                          customer={deleteCustomer}
-                        />
-                      )}
+
                     </td>
                     <td className="border px-4 py-2">
                       <button
@@ -190,11 +197,7 @@ const Customer: NextPageWithLayout = () => {
                       >
                         PAY
                       </button>
-                      <PayDialog
-                        isOpen={isDialogOpen}
-                        onClose={closeDialog}
-                        customer={selectedCustomer}
-                      />
+
                     </td>
                   </tr>
                 ))}

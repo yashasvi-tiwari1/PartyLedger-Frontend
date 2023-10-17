@@ -114,6 +114,32 @@ const Transaction: NextPageWithLayout = () => {
 
   return (
     <>
+          <ConfirmDeleteTransaction
+              isOpen={kConfirmDelete}
+              onClose={() => setKConfirmDelete(false)}
+              onConfirm={() => handleDelete(deletedTransaction.id)}
+              onMConfirm={() =>
+                  handleMoneyDelete(deletedTransaction.id)
+              }
+              transaction={deletedTransaction}
+          />
+
+      {updateMTransaction && (
+          <MoneyTransactionUpdate
+              isOpen={updateMTransaction}
+              onClose={handleCloseUpdateTransactions}
+              mTransaction={updatedMTransaction}
+          />
+      )}
+
+      {updateKTransaction && (
+          <KhataTransactionUpdate
+              isOpen={updateKTransaction}
+              onClose={handleCloseUpdateTransactions}
+              kTransaction={updatedKTransaction}
+          />
+      )}
+
       <div className="bg-dashboard  p-4 rounded-lg">
         <div className="flex justify-between  items-center px-4  ">
           <div className="relative transaction -search">
@@ -165,30 +191,14 @@ const Transaction: NextPageWithLayout = () => {
                         onClick={() => handleKEdit(kTransaction)}
                         className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                       />
-                      {updateKTransaction && (
-                        <KhataTransactionUpdate
-                          isOpen={updateKTransaction}
-                          onClose={handleCloseUpdateTransactions}
-                          kTransaction={updatedKTransaction}
-                        />
-                      )}
+
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
                         onClick={() => handleKTransactionDelete(kTransaction)}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
-                      {kConfirmDelete && (
-                        <ConfirmDeleteTransaction
-                          isOpen={kConfirmDelete}
-                          onClose={() => setKConfirmDelete(false)}
-                          onConfirm={() => handleDelete(deletedTransaction.id)}
-                          onMConfirm={() =>
-                            handleMoneyDelete(deletedTransaction.id)
-                          }
-                          transaction={deletedTransaction}
-                        />
-                      )}
+
                     </td>
                   </tr>
                 </tbody>
@@ -225,30 +235,13 @@ const Transaction: NextPageWithLayout = () => {
                         onClick={() => handleMEdit(mTransaction)}
                         className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                       />
-                      {updateMTransaction && (
-                        <MoneyTransactionUpdate
-                          isOpen={updateMTransaction}
-                          onClose={handleCloseUpdateTransactions}
-                          mTransaction={updatedMTransaction}
-                        />
-                      )}
+
                     </td>
                     <td className="border px-4 py-2 ">
                       <IconTrash
                         onClick={() => handleKTransactionDelete(mTransaction)}
                         className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                       />
-                      {kConfirmDelete && (
-                        <ConfirmDeleteTransaction
-                          isOpen={kConfirmDelete}
-                          onClose={() => setKConfirmDelete(false)}
-                          onMConfirm={() =>
-                            handleMoneyDelete(deletedTransaction.id)
-                          }
-                          onConfirm={() => handleDelete(deletedTransaction.id)}
-                          transaction={deletedTransaction}
-                        />
-                      )}
                     </td>
                   </tr>
                 </tbody>
